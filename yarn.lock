@@ -255,9 +255,9 @@
     cross-fetch "^3.0.6"
 
 "@supabase/realtime-js@^1.2.1":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@supabase/realtime-js/-/realtime-js-1.3.0.tgz#4826b934228ba05ab2b7dc7435d8677626fb1f92"
-  integrity sha512-neGDYt7hzyEI+/8cofk4GO/es4TE+vOSsBLFveYTmjq8Yl1FfVtL5EHfiPP+xo//35RnzhD75v1jBUEOfMhCtw==
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@supabase/realtime-js/-/realtime-js-1.3.1.tgz#3ef129ce2b8f98fea992f90fabf210cffc8ff2ed"
+  integrity sha512-JVAgchQDOY4KsNDEEu89UH4B5XN3+YLFbY2pwc0FiNvoSKTMVyk7E4+fRIoWpcNuTlv5FZJu/G4UK23GfyC09Q==
   dependencies:
     "@types/websocket" "^1.0.3"
     websocket "^1.0.34"
