@@ -8,7 +8,7 @@ export function errorHandler(
   next: NextFunction
 ) {
   let status = err.status || 500;
-  let error = err.message || "Something went wrong";
+  let error = err.message || err.error || "Something went wrong";
   res.status(status);
   res.json({ status, error });
   res.end();
