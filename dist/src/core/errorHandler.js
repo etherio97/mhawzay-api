@@ -7,5 +7,6 @@ function errorHandler(err, req, res, next) {
     res.status(status);
     res.json({ status, error });
     res.end();
+    console.log(err);
 }
 exports.errorHandler = errorHandler;
