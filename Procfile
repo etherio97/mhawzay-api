@@ -1,0 +1,1 @@
+web: bin/get-credential.sh && yarn start
