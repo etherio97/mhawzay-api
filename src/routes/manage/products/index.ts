@@ -1,16 +1,28 @@
-import { ShopController } from "@mhawzay/controllers";
+import { ProductController } from "@mhawzay/controllers";
 import { supabase } from "@mhawzay/core";
-import { Shop } from "@mhawzay/models";
+import { Product } from "@mhawzay/models";
 import { Request } from "@mhawzay/types";
 import { Router } from "express";
 
 export const router = Router();
 
 router.get("/", (req: Request, res, next) => {
+  const { shop_id } = req.query;
+
+  if (!shop_id) {
+    return next({
+      status: 400,
+      message: "required shop_id query paramater",
+    });
+  }
+
   supabase
-    .from("shops")
-    .select("shop_id:id,name,category,status,slug,avatar_url,cover_url")
+    .from("products")
+    .select(
+      "product_id:id,name,code,price,description,image_url,category,status"
+    )
     .eq("user_id", req.auth.uid)
+    .eq("shop_id", shop_id)
     .then(({ data, error }) => {
       if (error) {
         return next({
@@ -24,10 +36,10 @@ router.get("/", (req: Request, res, next) => {
 
 router.post(
   "/",
-  ShopController.validateRequestToCreate,
-  (req: Request<Shop>, res, next) => {
+  ProductController.validateRequestToCreate,
+  (req: Request<Product>, res, next) => {
     supabase
-      .from("shops")
+      .from("products")
       .insert([req.body])
       .then(({ data, error }) => {
         if (error) {
@@ -43,7 +55,7 @@ router.post(
 
 router.delete("/:id", (req: Request, res, next) => {
   supabase
-    .from("shops")
+    .from("products")
     .delete()
     .eq("id", req.params.id)
     .eq("user_id", req.auth.uid)
@@ -57,19 +69,20 @@ router.delete("/:id", (req: Request, res, next) => {
       if (!data.length) {
         return next({
           status: 404,
-          message: "Shop not found",
+          message: "Product not found",
         });
       }
-      res.status(200).json({ shop_id: data[0].id });
+      let product = data[0];
+      res.status(200).json({ product_id: product.id });
     });
 });
 
 router.patch(
   "/:id",
-  ShopController.validateRequestToUpdate,
-  (req: Request<Shop>, res, next) => {
+  ProductController.validateRequestToUpdate,
+  (req: Request<Product>, res, next) => {
     supabase
-      .from("shops")
+      .from("products")
       .update(req.body)
       .eq("id", req.params.id)
       .eq("user_id", req.auth.uid)
@@ -83,7 +96,7 @@ router.patch(
         if (!data.length) {
           return next({
             status: 404,
-            message: "Shop not found",
+            message: "Product not found",
           });
         }
         res.status(200).json(req.body);

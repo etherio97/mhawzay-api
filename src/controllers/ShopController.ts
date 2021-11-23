@@ -5,7 +5,7 @@ import { NextFunction, Response } from "express";
 
 export class ShopController {
   static validateRequestToCreate(
-    req: Request,
+    req: Request<Shop>,
     res: Response,
     next: NextFunction
   ) {

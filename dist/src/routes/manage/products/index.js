@@ -6,10 +6,18 @@ const core_1 = require("@mhawzay/core");
 const express_1 = require("express");
 exports.router = (0, express_1.Router)();
 exports.router.get("/", (req, res, next) => {
+    const { shop_id } = req.query;
+    if (!shop_id) {
+        return next({
+            status: 400,
+            message: "required shop_id query paramater",
+        });
+    }
     core_1.supabase
-        .from("shops")
-        .select("shop_id:id,name,category,status,slug,avatar_url,cover_url")
+        .from("products")
+        .select("product_id:id,name,code,price,description,image_url,category,status")
         .eq("user_id", req.auth.uid)
+        .eq("shop_id", shop_id)
         .then(({ data, error }) => {
         if (error) {
             return next({
@@ -20,9 +28,9 @@ exports.router.get("/", (req, res, next) => {
         res.json(data);
     });
 });
-exports.router.post("/", controllers_1.ShopController.validateRequestToCreate, (req, res, next) => {
+exports.router.post("/", controllers_1.ProductController.validateRequestToCreate, (req, res, next) => {
     core_1.supabase
-        .from("shops")
+        .from("products")
         .insert([req.body])
         .then(({ data, error }) => {
         if (error) {
@@ -36,7 +44,7 @@ exports.router.post("/", controllers_1.ShopController.validateRequestToCreate, (
 });
 exports.router.delete("/:id", (req, res, next) => {
     core_1.supabase
-        .from("shops")
+        .from("products")
         .delete()
         .eq("id", req.params.id)
         .eq("user_id", req.auth.uid)
@@ -50,15 +58,16 @@ exports.router.delete("/:id", (req, res, next) => {
         if (!data.length) {
             return next({
                 status: 404,
-                message: "Shop not found",
+                message: "Product not found",
             });
         }
-        res.status(200).json({ shop_id: data[0].id });
+        let product = data[0];
+        res.status(200).json({ product_id: product.id });
     });
 });
-exports.router.patch("/:id", controllers_1.ShopController.validateRequestToUpdate, (req, res, next) => {
+exports.router.patch("/:id", controllers_1.ProductController.validateRequestToUpdate, (req, res, next) => {
     core_1.supabase
-        .from("shops")
+        .from("products")
         .update(req.body)
         .eq("id", req.params.id)
         .eq("user_id", req.auth.uid)
@@ -72,7 +81,7 @@ exports.router.patch("/:id", controllers_1.ShopController.validateRequestToUpdat
         if (!data.length) {
             return next({
                 status: 404,
-                message: "Shop not found",
+                message: "Product not found",
             });
         }
         res.status(200).json(req.body);
