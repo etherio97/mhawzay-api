@@ -20,8 +20,14 @@ export class ShopController {
     if (slug && typeof slug !== "string") {
       errors.push("slug must be string");
     }
+    if (avatar_url === '') {
+      avatar_url = undefined;
+    }
     if (avatar_url && typeof avatar_url !== "string") {
       errors.push("avatar_url must be string");
+    }
+    if (cover_url === '') {
+      cover_url = undefined;
     }
     if (cover_url && typeof cover_url !== "string") {
       errors.push("cover_url must be string");
