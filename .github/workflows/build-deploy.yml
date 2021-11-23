@@ -1,0 +1,30 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - src/**
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Installing dependencies
+        run: yarn
+      - name: Build for production
+        run: yarn build:prod
+      - name: Configure Git
+        run: |
+          git config --global user.name Etherio
+          git config --global user.email 50423290+etherio97@users.noreply.github.com
+      - name: Push to main branch
+        run: |
+          git checkout --orphan main
+          git rm -rf src .github
+          git add -f dist
+          git commit -am '[workflow] this branch is an automatic workflow from master branch'
+          git push -f origin main
