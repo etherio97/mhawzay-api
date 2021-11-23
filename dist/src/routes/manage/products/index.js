@@ -42,6 +42,28 @@ exports.router.post("/", controllers_1.ProductController.validateRequestToCreate
         res.status(201).json(data[0]);
     });
 });
+exports.router.get("/:id", (req, res, next) => {
+    core_1.supabase
+        .from("products")
+        .select("product_id:id,name,code,price,description,image_url,category,status")
+        .eq("id", req.params.id)
+        .eq("user_id", req.auth.uid)
+        .then(({ data, error }) => {
+        if (error) {
+            return next({
+                status: 400,
+                message: error.message,
+            });
+        }
+        if (!data.length) {
+            return next({
+                status: 404,
+                message: "Product not found",
+            });
+        }
+        res.json(data[0]);
+    });
+});
 exports.router.delete("/:id", (req, res, next) => {
     core_1.supabase
         .from("products")

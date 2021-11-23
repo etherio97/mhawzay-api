@@ -41,6 +41,29 @@ router.post(
   }
 );
 
+router.get("/:id", (req: Request, res, next) => {
+  supabase
+    .from("shops")
+    .select("shop_id:id,name,category,status,slug,avatar_url,cover_url")
+    .eq("id", req.params.id)
+    .eq("user_id", req.auth.uid)
+    .then(({ data, error }) => {
+      if (error) {
+        return next({
+          status: 400,
+          message: error.message,
+        });
+      }
+      if (!data.length) {
+        return next({
+          status: 404,
+          message: "Shop not found",
+        });
+      }
+      res.json(data[0]);
+    });
+});
+
 router.delete("/:id", (req: Request, res, next) => {
   supabase
     .from("shops")
