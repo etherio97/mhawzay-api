@@ -18,15 +18,15 @@ jobs:
       - name: Installing Typedoc
         run: yarn add typedoc --save-dev
       - name: Generate Typedoc Docs
-        run: npx typedoc --out docs src/main.ts
+        run: npx typedoc --options typedoc.json
       - name: Configure Git
         run: |
           git config --global user.name Etherio
           git config --global user.email 50423290+etherio97@users.noreply.github.com
-      - name: Push to main branch
+      - name: Push to gh-pages branch
         run: |
           git checkout --orphan gh-pages
-          git rm -rf src .github
+          git rm -rf src .github bin
           git add docs
           git commit -am '[typedoc] this branch is an automatic workflow to genetic documentation'
           git push -f origin gh-pages
