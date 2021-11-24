@@ -26,7 +26,7 @@ jobs:
       - name: Push to main branch
         run: |
           git checkout --orphan gh-pages
-          git rm -rf src .github dist test tests
-          git add -f docs
+          git rm -rf src .github
+          git add docs
           git commit -am '[typedoc] this branch is an automatic workflow to genetic documentation'
           git push -f origin gh-pages
