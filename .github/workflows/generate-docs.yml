@@ -1,0 +1,32 @@
+name: Generate Docs
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - src/**
+  workflow_dispatch:
+    inputs:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Installing Typedoc
+        run: yarn add typedoc --save-dev
+      - name: Generate Typedoc Docs
+        run: npx typedoc --out docs src/main.ts
+      - name: Configure Git
+        run: |
+          git config --global user.name Etherio
+          git config --global user.email 50423290+etherio97@users.noreply.github.com
+      - name: Push to main branch
+        run: |
+          git checkout --orphan gh-pages
+          git rm -rf src .github dist test tests
+          git add -f docs
+          git commit -am '[typedoc] this branch is an automatic workflow to genetic documentation'
+          git push -f origin gh-pages
