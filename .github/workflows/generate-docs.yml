@@ -5,8 +5,6 @@ on:
       - master
     paths:
       - src/**
-  workflow_dispatch:
-    inputs:
 jobs:
   build:
     runs-on: ubuntu-latest
