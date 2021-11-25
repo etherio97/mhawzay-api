@@ -1,6 +1,6 @@
 import { EMAIL_VALIDATION_PATTERN } from "@mhawzay/config";
 import { supabase } from "@mhawzay/core";
-import { json, Router } from "express";
+import { Router } from "express";
 
 export const router = Router();
 
@@ -24,4 +24,24 @@ router.post("/", (req, res, next) => {
     }
     res.json(session);
   });
+});
+
+router.get("/", (req, res, next) => {
+  const { email } = req.query;
+  if (typeof email !== "string") {
+    return next({
+      status: 400,
+      message: "required parameter for email in query",
+    });
+  }
+  supabase
+    .from("users")
+    .select("email")
+    .eq("email", email)
+    .then(({ data, error }) => {
+      if (error) {
+        return next({ status: 400, message: error.message });
+      }
+      res.json(!!data.length);
+    });
 });
