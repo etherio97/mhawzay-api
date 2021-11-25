@@ -32,6 +32,7 @@ router.get("/", (req: Request, res, next) => {
         message: "inventory not found",
       });
     }
+    res.setHeader("cache-control", "private, max-age=300");
     res.json(product_id ? data[0] : data);
   });
 });

@@ -18,6 +18,7 @@ router.get("/", (req: Request, res, next) => {
           message: error.message,
         });
       }
+      res.setHeader("cache-control", "private, max-age=300");
       res.json(data);
     });
 });
@@ -60,6 +61,7 @@ router.get("/:id", (req: Request, res, next) => {
           message: "Shop not found",
         });
       }
+      res.setHeader("cache-control", "private, max-age=300");
       res.json(data[0]);
     });
 });

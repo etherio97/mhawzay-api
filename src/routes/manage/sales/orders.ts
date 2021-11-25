@@ -17,6 +17,7 @@ router.get("/", (req: Request, res, next) => {
       if (error) {
         return next({ status: 400, message: error.message });
       }
+      res.setHeader("cache-control", "private, max-age=300");
       if (data.length) {
         if (data[0].shops.user_id !== uid) {
           return next({ status: 403, message: "Forbidden" });
