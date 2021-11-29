@@ -14,7 +14,7 @@ initializeSupabase();
 app.use((req, res, next) => {
   let origin: string | undefined = req.headers.origin;
   if (!origin) return next();
-  if (/^https?:\/\/(localhost|mhawzay)/.test(origin)) return next();
+  if (/^https?:\/\/(localhost|mhawzay|shop\.nweoo\.com)/.test(origin)) return next();
   next({ status: 429, message: "Too many request" });
 });
 
