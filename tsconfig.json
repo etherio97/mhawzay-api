@@ -1,0 +1,30 @@
+{
+    "include": [
+      "src/**/*.js",
+      "src/**/*.ts"
+    ],
+    "compilerOptions": {
+      "target": "es2017",
+      "module": "commonjs",
+      "allowJs": true,
+      "checkJs": true,
+      "declaration": false,
+      "declarationMap": false,
+      "rootDir": "./",
+      "outDir": "./dist",
+      "removeComments": true,
+      "esModuleInterop": true,
+      "experimentalDecorators": false,
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true,
+      "types": [
+        "@types/express"
+      ],
+      "baseUrl": "./",
+      "paths": {
+        "@mhawzay/*": [
+          "src/*"
+        ]
+      }
+    }
+  }
