@@ -8,4 +8,6 @@ export const SUPABASE_URL: string = env.SUPABASE_URL;
 
 export const SUPABASE_SECRET: string = env.SUPABASE_SECRET;
 
+export const DATABASE_URL: string = env.DATABASE_URL;
+
 export const EMAIL_VALIDATION_PATTERN = /^\w+@[a-z]+\.[a-z]{2,6}$/;

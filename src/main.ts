@@ -1,27 +1,31 @@
 import {
   app,
   errorHandler,
+  initializeDatabaseConnection,
   initializeFirebaseAdmin,
   initializeSupabase,
 } from "@mhawzay/core";
 import { PORT } from "@mhawzay/config";
 import { router } from "@mhawzay/routes";
 
-initializeFirebaseAdmin();
+async function bootstrap() {
+  const booted = Date.now();
 
-initializeSupabase();
+  initializeFirebaseAdmin();
 
-app.use((req, res, next) => {
-  let origin: string | undefined = req.headers.origin;
-  if (!origin) return next();
-  if (/^https?:\/\/(localhost|mhawzay|shop\.nweoo\.com)/.test(origin)) return next();
-  next({ status: 429, message: "Too many request" });
-});
+  initializeSupabase();
 
-app.use(router);
+  await initializeDatabaseConnection().connect();
 
-app.use(errorHandler);
+  console.log("Boot Time: %d ms", Date.now() - booted);
 
-app.listen(PORT, () =>
-  console.log(`server is running on http://localhost:${PORT}`)
-);
+  app.use(router);
+
+  app.use(errorHandler);
+
+  app.listen(PORT, () =>
+    console.log(`server is running on http://localhost:${PORT}`)
+  );
+}
+
+bootstrap();

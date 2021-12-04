@@ -2,6 +2,9 @@ import * as admin from "firebase-admin";
 
 export function verifyAuthToken(req, res, next) {
   let token;
+  // req.auth = { uid: "qIT8EzIwIWb5Rj6zwc065DPiseP2" };
+  // return next();
+  const started = Date.now();
   if ("authorization" in req.headers) {
     token = req.headers.authorization.replace("Bearer ", "");
   }
@@ -14,6 +17,7 @@ export function verifyAuthToken(req, res, next) {
     .then((user) => {
       req.auth = user;
       next();
+      console.log("Auth Time: %d ms", Date.now() - started);
     })
     .catch((e) => {
       let error = "Failed to authenicate";
@@ -28,5 +32,6 @@ export function verifyAuthToken(req, res, next) {
           console.log("[middleware:auth]", e.code);
       }
       next({ status: 401, error });
+      console.log("Auth Time: %d ms", Date.now() - started);
     });
 }
